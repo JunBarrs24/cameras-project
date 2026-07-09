@@ -1,0 +1,35 @@
+# Runs the same four validators as the pre-commit hooks (docs/HOW_TO_VALIDATE.md)
+# on every push and pull request, so the rule holds even for commits made outside
+# a hooked clone.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+
+      - name: Sync dependencies
+        run: uv sync
+
+      - name: ruff format (check only)
+        run: uv run ruff format --check .
+
+      - name: ruff check
+        run: uv run ruff check .
+
+      - name: ty check
+        run: uv run ty check
+
+      - name: pytest
+        run: uv run pytest

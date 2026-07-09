@@ -46,7 +46,7 @@ Validation: `git remote -v` shows origin; the pushed `src/main.py` on GitHub con
   - `ruff format` and `ruff check` (Python)
   - `ty check` (typecheck, whole project)
   - `pytest` (whole suite; the repo is small enough for this to stay fast)
-  - an em-dash guard on markdown files (pygrep for `—`, excluding docs/HOW_TO_WRITE_DOCUMENTS.md which names the character), enforcing the writing rule mechanically
+  - an em-dash guard on markdown files (pygrep for the em-dash character, excluding docs/HOW_TO_WRITE_DOCUMENTS.md which names the character), enforcing the writing rule mechanically
   - Install with `uv run pre-commit install`. Committing with `--no-verify` requires a written justification in the change log.
 - **CI**: `.github/workflows/ci.yml` running the same four validators on every push, so the rule holds even for commits made outside a hooked clone.
 - Delete the hello-world `main.py` at the repo root.

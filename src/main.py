@@ -7,10 +7,7 @@ USERNAME = os.environ["CAMERA_USERNAME"]
 PASSWORD = os.environ["CAMERA_PASSWORD"]
 IP = os.environ.get("CAMERA_IP", "192.168.100.115")
 
-rtsp_url = (
-    f"rtsp://{USERNAME}:{PASSWORD}@{IP}:554/"
-    "cam/realmonitor?channel=2&subtype=0"
-)
+rtsp_url = f"rtsp://{USERNAME}:{PASSWORD}@{IP}:554/cam/realmonitor?channel=2&subtype=0"
 
 print("Conectando...")
 

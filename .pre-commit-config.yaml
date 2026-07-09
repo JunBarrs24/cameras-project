@@ -1,0 +1,43 @@
+# Local hooks mirror the four validators in docs/HOW_TO_VALIDATE.md, so nothing
+# lands in a commit without passing them. Committing with --no-verify requires a
+# written justification in the change-log entry.
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: ty-check
+        name: ty check
+        entry: uv run ty check
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: pytest
+        name: pytest
+        entry: uv run pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: no-em-dash
+        name: no em-dash in markdown
+        # The writing rule bans the em-dash. HOW_TO_WRITE_DOCUMENTS.md is excluded
+        # because it names the character to define the rule.
+        entry: "—"
+        language: pygrep
+        files: \.md$
+        exclude: ^docs/HOW_TO_WRITE_DOCUMENTS\.md$

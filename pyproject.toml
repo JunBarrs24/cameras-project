@@ -1,10 +1,38 @@
 [project]
 name = "proyecto-rafa"
 version = "0.1.0"
-description = "Add your description here"
+description = "Edge video-analytics pipeline: camera in, events out."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "opencv-python>=4.13.0.92",
     "ultralytics>=8.4.81",
+    "pydantic>=2.11.0",
+    "pydantic-settings>=2.7.0",
+    "pyyaml>=6.0.2",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.0",
+    "pytest>=8.3.0",
+    "ty>=0.0.1a1",
+    "pre-commit>=4.0.0",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "slow: tests that need model weights or a sample clip (deselect with -m 'not slow')",
+]
+
+[tool.ty.environment]
+python-version = "3.13"
