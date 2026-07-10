@@ -12,3 +12,4 @@ One line per change, newest last. Full text lives in the per-change files. See [
 - 0008 (2026-07-09) [Zone engine](0008-zone-engine.md)
 - 0009 (2026-07-09) [Rule engine](0009-rule-engine.md)
 - 0010 (2026-07-09) [Storage and container decisions](0010-storage-and-container-decisions.md)
+- 0011 (2026-07-09) [Event store](0011-event-store.md)
