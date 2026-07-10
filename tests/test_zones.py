@@ -114,8 +114,11 @@ def test_reenter_starts_a_new_membership() -> None:
 
 
 def test_load_dev_zones() -> None:
+    # The dev zones file is real, operator-drawn config, so assert structure, not
+    # specific names: it loads at least one zone with a valid normalized polygon.
     zones = load_zones("sites/dev/zones.yaml", "camera-1")
-    assert [z.name for z in zones] == ["zona-demo"]
+    assert zones, "dev zones file has no zones for camera-1"
+    assert all(len(z.polygon) >= 3 for z in zones)
     assert all(0.0 <= x <= 1.0 and 0.0 <= y <= 1.0 for z in zones for x, y in z.polygon)
 
 

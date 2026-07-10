@@ -38,7 +38,7 @@ Validation: a factory-fresh box plugged into a network with the NVR appears in t
 
 ### Step 3: remote configuration
 
-- The edge pulls its profile, zones, and camera list from the cloud on start and on change (poll or push; decide with real constraints). Zone edits happen in the dashboard, propagate to the box, no SSH involved.
+- The edge pulls its profile, zones, and camera list from the cloud on start and on change (poll or push; decide with real constraints). Zone edits happen in the dashboard, propagate to the box, no SSH involved. The dashboard zone editor builds on the local editor from Phase 1 step 5, moving its canvas into the cloud.
 
 Files: `edge/agent/config_sync.py` (C), `cloud/fleet/` (M), dashboard zone editor (M)
 Validation: changing a zone polygon in the dashboard alters edge behavior within minutes, verified by events.

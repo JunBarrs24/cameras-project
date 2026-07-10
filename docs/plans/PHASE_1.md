@@ -55,7 +55,24 @@ Validation: a staged intrusion event produces exactly one Telegram message withi
 Files: `cloud/dashboard/*` (C)
 Validation: the pilot owner can log in from a phone and answer "what happened yesterday" without help.
 
-### Step 5: deploy and onboarding kit
+### Step 5: usable zone editor
+
+Motivation: the Phase 0 `scripts/draw_zones.py` proved the concept, but its UX is unacceptable for a real install. The zone name is typed in the terminal while the operator is inside the OpenCV window, a context switch on every polygon. There is no way to edit or delete a placed vertex or zone, no labels or feedback on the canvas, and only a single frozen frame. An installer drawing a dozen zones across several cameras this way is slow and error prone, which directly threatens the "onboard in under one hour" exit criterion.
+
+Target: a browser-based zone editor served locally (a small FastAPI app or static page the edge box or a dev command serves; the installer opens it from a laptop or phone on the LAN). Requirements:
+
+- Load a live or captured frame per camera; switch cameras and refresh the frame.
+- Draw polygons by clicking on the image and name each zone inline on the canvas, with no terminal involved.
+- Edit: move and delete vertices, delete or rename a whole zone, undo.
+- Show every zone overlaid with its name, and the foot-anchor membership live (a hovered point or a walked-in person highlights the containing zone), so the operator validates a zone before saving.
+- Save to `sites/<site>/zones.yaml` in normalized coordinates (D-010), merging per camera.
+
+Files: `edge/zone_editor/*` or `scripts/zone_editor.py` (C), tests (C)
+Validation: an operator with no prior training draws and names 5 zones across 2 cameras in under 10 minutes without touching a terminal; the saved yaml loads and drives events.
+
+Note: Phase 2 step 3 supersedes this with the cloud dashboard zone editor (remote edits that propagate to the box). This Phase 1 editor is the local, install-time tool; keep its canvas logic reusable so the dashboard version builds on it.
+
+### Step 6: deploy and onboarding kit
 
 - Deploy the compose stack to the VPS with TLS.
 - `docs/ONBOARDING.md`: checklist to bring a site live (NVR access, RTSP URLs per camera, zone drawing session, alert recipients, API key issuance, videovigilancia signage reminder aligned with D-004).
@@ -64,7 +81,7 @@ Validation: the pilot owner can log in from a phone and answer "what happened ye
 Files: `docs/ONBOARDING.md` (C), deploy config (C), retention job (C)
 Validation: a second fake "site" onboards end to end in under one hour following only the document; retention job verifiably deletes expired snapshots.
 
-### Step 6: the pilot itself
+### Step 7: the pilot itself
 
 - Install the edge on the store's machine (D-005), configure cameras and zones, run 2 to 4 weeks.
 - Weekly review with the owner: which alerts were useful, which were noise, what is missing. Adjustments go in as profile/config changes (D-003 discipline).

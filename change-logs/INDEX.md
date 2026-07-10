@@ -14,3 +14,4 @@ One line per change, newest last. Full text lives in the per-change files. See [
 - 0010 (2026-07-09) [Storage and container decisions](0010-storage-and-container-decisions.md)
 - 0011 (2026-07-09) [Event store](0011-event-store.md)
 - 0012 (2026-07-09) [Application wiring](0012-application-wiring.md)
+- 0013 (2026-07-09) [Plan a usable zone editor](0013-plan-zone-editor-ux.md)

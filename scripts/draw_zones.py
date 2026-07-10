@@ -1,5 +1,9 @@
 """Draw named zones on a camera frame and write them to a site's `zones.yaml`.
 
+Interim tool. Its UX is rough (the zone name is typed in the terminal, no editing
+of placed zones), superseded by the usable zone editor in Phase 1 step 5
+(docs/plans/PHASE_1.md).
+
 Grabs one frame from a source (a recorded clip or the live camera), lets you
 click polygon vertices, and saves the zones. Clicks are captured in pixels and
 stored NORMALIZED to [0, 1] by frame width and height, so the zones survive a
