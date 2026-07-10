@@ -6,7 +6,7 @@ stored NORMALIZED to [0, 1] by frame width and height, so the zones survive a
 resolution change (see docs/DECISIONS.md D-010). The installer clicks in pixels
 and never deals with the normalization.
 
-    uv run python scripts/draw_zones.py --source data/samples/clip.avi \
+    uv run python -m scripts.draw_zones --source data/samples/clip.avi \
         --camera camera-1 --output sites/dev/zones.yaml
 
 Controls: left click adds a point, `n` closes the current polygon and asks for a

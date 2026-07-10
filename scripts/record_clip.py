@@ -4,7 +4,7 @@ This is what unblocks camera-free development: run it once against the real
 camera, then drive the whole pipeline from the saved file. `data/` is gitignored,
 so clips never enter the repository.
 
-    uv run python scripts/record_clip.py --seconds 45 --output data/samples/clip.avi
+    uv run python -m scripts.record_clip --seconds 45 --output data/samples/clip.avi
 
 Credentials come from `.env` through `edge.config`; the RTSP URL is never printed.
 """
