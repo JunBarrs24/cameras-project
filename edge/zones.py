@@ -74,12 +74,23 @@ class Zone:
         return inside
 
 
+@dataclass(frozen=True, slots=True)
+class Presence:
+    """A track currently inside a zone, as read by the rule engine each tick."""
+
+    track_id: int
+    zone: str
+    class_name: str
+    dwell_s: float
+
+
 @dataclass(slots=True)
 class _Membership:
     """Internal state for one track inside one zone."""
 
     enter_ts: datetime
     last_ts: datetime
+    class_name: str
 
 
 def anchor_of(track: Track, frame_size: tuple[int, int]) -> tuple[float, float]:
@@ -112,7 +123,9 @@ class ZoneEngine:
                 seen.add(key)
                 membership = self._inside.get(key)
                 if membership is None:
-                    self._inside[key] = _Membership(track.ts, track.ts)
+                    self._inside[key] = _Membership(
+                        track.ts, track.ts, track.class_name
+                    )
                     events.append(
                         ZoneEvent(
                             ZoneEventKind.enter,
@@ -146,17 +159,18 @@ class ZoneEngine:
             return None
         return (membership.last_ts - membership.enter_ts).total_seconds()
 
-    def present(self) -> Iterator[tuple[int, str, float]]:
-        """Yield (track_id, zone, dwell_s) for every active membership.
+    def present(self) -> Iterator[Presence]:
+        """Yield a `Presence` for every active membership.
 
         The rule engine (step 7) reads this each tick to evaluate presence during
         a schedule window and dwell above a threshold.
         """
         for (track_id, zone_name), membership in self._inside.items():
-            yield (
-                track_id,
-                zone_name,
-                (membership.last_ts - membership.enter_ts).total_seconds(),
+            yield Presence(
+                track_id=track_id,
+                zone=zone_name,
+                class_name=membership.class_name,
+                dwell_s=(membership.last_ts - membership.enter_ts).total_seconds(),
             )
 
 

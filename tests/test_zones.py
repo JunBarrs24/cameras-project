@@ -83,7 +83,14 @@ def test_dwell_accumulates_across_frames() -> None:
     engine.update([track_at(1, 50, 50, t(5))], FRAME)
     engine.update([track_at(1, 50, 50, t(10))], FRAME)
     assert engine.dwell_s(1, "center") == pytest.approx(10.0)
-    assert list(engine.present()) == [(1, "center", pytest.approx(10.0))]
+    present = list(engine.present())
+    assert len(present) == 1
+    assert (present[0].track_id, present[0].zone, present[0].class_name) == (
+        1,
+        "center",
+        "person",
+    )
+    assert present[0].dwell_s == pytest.approx(10.0)
 
 
 def test_track_crossing_two_zones() -> None:
