@@ -63,9 +63,36 @@ Events are written to `data/edge.db` (SQLite). Inspect them:
 sqlite3 data/edge.db "select type, zone, track_id, dwell_s, ts from events"
 ```
 
-Useful flags: `--profile`, `--zones`, `--site`, `--camera`, `--db`, `--fps`,
-`--cooldown`, `--max-frames`. Stop a live run with Ctrl-C (it shuts down
-gracefully).
+### Run options
+
+| Flag | Default | What it does |
+|---|---|---|
+| `--source` | camera from `.env` | RTSP URL or clip path to read frames from |
+| `--profile` | `profiles/retail.yaml` | vertical profile (model, classes, rules) |
+| `--zones` | `sites/dev/zones.yaml` | per-camera zone polygons |
+| `--camera` | `camera-1` | which camera block in the zones file to load |
+| `--site` | `dev` | site id stamped on every event |
+| `--db` | `data/edge.db` | SQLite path for stored events |
+| `--fps` | `8` | target sampling rate (analytics need 5 to 10) |
+| `--cooldown` | `300` | seconds before the same (rule, track) can re-fire |
+| `--max-frames` | unlimited | stop after N frames, for bounded runs |
+| `--show` | off | open the annotated debug window |
+
+Stop a live run with Ctrl-C; it shuts down gracefully.
+
+### What to expect (retail profile)
+
+The default `profiles/retail.yaml` has two rules:
+
+- `dwell`: someone in a `pasillo-*` zone for more than 30 seconds produces one
+  `dwell` event (repeats suppressed for `--cooldown` seconds).
+- `after-hours-intrusion`: someone in `trastienda` between 22:00 and 07:00
+  produces an `intrusion` event. It stays silent outside that window, so it does
+  not fire during the day.
+
+Zone membership is tested on a person's feet (the bottom of the box). To retest
+dwell without waiting out the cooldown, pass a small value, for example
+`--cooldown 10`.
 
 ## Validate
 
