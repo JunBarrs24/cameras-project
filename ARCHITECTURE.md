@@ -51,7 +51,7 @@ RTSP streams → ingest → detect → track → zone engine → rule engine →
 - **ingest**: per-camera capture with automatic reconnection and frame sampling (5 to 10 fps is enough for analytics).
 - **detect**: model runner. The profile decides which weights and which classes. Stock yolo11 for retail; fine-tuned PPE weights for construction.
 - **track**: ByteTrack (built into ultralytics) gives each person a stable ID, enabling dwell, paths, and unique counting.
-- **zone engine**: named polygons per camera ("pasillo-4", "trastienda", "zona-excavacion"). Emits enter/exit/dwell facts.
+- **zone engine**: named polygons per camera ("pasillo-4", "trastienda", "zona-excavacion"). Emits enter/exit/dwell facts. Polygon geometry is site and camera specific (each lens frames a different scene), so it lives in `sites/<site>/zones.yaml`, separate from the vertical profile. The profile references zones by name; the site config gives each name its polygon. Vertices are stored in normalized `[0, 1]` coordinates so a zone survives a stream resolution change (D-010).
 - **rule engine**: evaluates profile rules over tracks, zones, and schedule (e.g. "person in `trastienda` between 22:00 and 07:00 raises an alert"). Emits events.
 - **event queue**: every event is written to local SQLite first, then uploaded; it survives internet outages and syncs on reconnect.
 

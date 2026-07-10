@@ -75,3 +75,13 @@ Status: proposed (2026-07-09, awaiting validation)
 Decision: Phase 1 alerting ships on Telegram (free bot API, roughly an hour of work). WhatsApp Business API (Meta Cloud API or Twilio) is added when a paying client requires it, since WhatsApp is what MX store owners and supervisors actually use.
 Tradeoff: pilot users must install/open Telegram, in exchange for shipping alerts weeks earlier and at zero cost.
 Bias: prove the alert loop first; pay for the preferred channel when revenue justifies it.
+
+## D-010: Zone polygons in normalized coordinates
+
+Status: validated (2026-07-09, conversation with the developer)
+
+Decision: zone polygon vertices are stored in normalized [0.0, 1.0] coordinates, as fractions of frame width and height, in `sites/<site>/zones.yaml`. The drawing tool (`scripts/draw_zones.py`) captures pixel clicks and converts them on save, so the installer never handles normalization.
+Tradeoff: the yaml is less readable at a glance (0.66 instead of 640) in exchange for zones that survive a stream resolution change. A client NVR reconfigured from 720p to 1080p would otherwise silently shift every zone.
+Bias: a silently broken zone is the worst failure mode for a security product, so prefer configuration that fails safe over configuration that reads nicely.
+
+Note: D-009 is reserved for the edge/cloud authentication proposal in change-log 0004, still awaiting validation, so it is not yet recorded here.

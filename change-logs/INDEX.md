@@ -9,3 +9,4 @@ One line per change, newest last. Full text lives in the per-change files. See [
 - 0005 (2026-07-09) [Profile loader](0005-profile-loader.md)
 - 0006 (2026-07-09) [Ingestion](0006-ingestion.md)
 - 0007 (2026-07-09) [Detection and tracking](0007-detection-tracking.md)
+- 0008 (2026-07-09) [Zone engine](0008-zone-engine.md)
