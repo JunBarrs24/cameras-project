@@ -1,0 +1,13 @@
+# Retail profile (ARCHITECTURE.md 3). Stock weights, no training needed for v1.
+# A profile is the only thing that differs per vertical; the engine stays single.
+model:
+  weights: yolo11n.pt
+  classes: [person]
+rules:
+  - id: after-hours-intrusion
+    when: {zone: trastienda, schedule: "22:00-07:00"}
+    emit: {type: intrusion, severity: high, alert: whatsapp}
+  - id: dwell
+    when: {zone: "pasillo-*", dwell_gt_s: 30}
+    emit: {type: dwell, severity: info}
+reports: [traffic-by-hour, zone-heatmap, dwell-ranking]
