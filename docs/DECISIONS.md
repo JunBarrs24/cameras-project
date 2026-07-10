@@ -85,3 +85,19 @@ Tradeoff: the yaml is less readable at a glance (0.66 instead of 640) in exchang
 Bias: a silently broken zone is the worst failure mode for a security product, so prefer configuration that fails safe over configuration that reads nicely.
 
 Note: D-009 is reserved for the edge/cloud authentication proposal in change-log 0004, still awaiting validation, so it is not yet recorded here.
+
+## D-011: Storage split, SQLite at the edge and Postgres in the cloud
+
+Status: validated (2026-07-09, conversation with the developer)
+
+Decision: the edge box stores events in embedded SQLite (stdlib `sqlite3`, a single file, WAL mode); the cloud stores them in Postgres. The `Event` schema in `shared/` is the one contract both sides mirror; the edge table adds an `uploaded` flag for the sync.
+Tradeoff: two storage engines to reason about, in exchange for each fitting its context. The edge is an unattended appliance we lend and cannot babysit (D-001, D-005): SQLite is a library linked into the process, not a server, so there is no daemon, port, roles, or backups to manage on a box that store staff power-cycle, and its single-writer, low-volume, append-mostly pattern needs none of Postgres' concurrency features. The cloud is the opposite: many sites writing while dashboards and reports read concurrently, multi-tenant, where Postgres fits and SQLite does not.
+Bias: minimize moving parts on hardware we cannot maintain; put operational weight only where it is maintained, in our cloud.
+
+## D-012: Container strategy, cloud in Docker, edge containerized only in Phase 2
+
+Status: validated (2026-07-09, conversation with the developer)
+
+Decision: the cloud runs in Docker from Phase 1. The edge runs natively (uv) in Phase 0 and in pilots (Phase 1), and is containerized in Phase 2 when the box is productized, to get OTA image updates, atomic rollback, and fleet consistency.
+Tradeoff: the edge lacks container isolation in the early phases, in exchange for avoiding hardware-passthrough friction (Intel iGPU with OpenVINO or Jetson CUDA, video devices, LAN RTSP) before it pays off. The container's real value, atomic update and rollback across a fleet, arrives with Phase 2 fleet management, which is when we take on its cost.
+Bias: adopt operational tooling when its benefit outweighs its cost, not by default.
