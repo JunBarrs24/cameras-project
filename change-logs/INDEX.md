@@ -16,3 +16,4 @@ One line per change, newest last. Full text lives in the per-change files. See [
 - 0012 (2026-07-09) [Application wiring](0012-application-wiring.md)
 - 0013 (2026-07-09) [Plan a usable zone editor](0013-plan-zone-editor-ux.md)
 - 0014 (2026-07-09) [README run options](0014-readme-run-options.md)
+- 0015 (2026-07-09) [Phase 0 live validation status](0015-phase0-live-validation.md)

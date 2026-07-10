@@ -128,6 +128,19 @@ Validation: full run against the sample clip and against the live camera.
 4. Standing inside a defined zone for 30+ seconds generates exactly one dwell event (cooldown verified in the real world, beyond the unit test).
 5. Every step has its change-log entry and references its decision IDs.
 
+## Status (2026-07-09)
+
+Criteria 1, 2, 4, and 5 are met. Criteria 2 and 4 were verified live against the
+Dahua camera: standing in `pasillo-1` for 30 seconds produced exactly one dwell
+event (`track=11`, `dwell=30.0s`), stored in SQLite, with a stable track id
+throughout (see change-log 0015).
+
+Criterion 3 is the only one left and is HIGH PRIORITY: a 10-minute live run
+without a crash, with automatic recovery after briefly disconnecting the camera
+network. It is the endurance and self-healing guarantee the edge box rests on,
+and nothing later in the roadmap re-tests it, so it must be run before Phase 0 is
+treated as closed.
+
 ## Out of scope
 
 No cloud upload, no alerts, no dashboard, single camera, no authentication, no packaging. Those belong to Phase 1 and 2.
